@@ -10,11 +10,8 @@ local MonsterMashAnim_Btn = Instance.new("TextButton")
 local MoonWalkAnim_Btn = Instance.new("TextButton")
 local Stop_Btn = Instance.new("TextButton")
 
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:wait()
-
-local human = character:WaitForChild("Humanoid")
-local torso = character:WaitForChild("Torso")
+local human = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+local torso = game.Players.LocalPlayer.Character:WaitForChild("Torso")
 
 Dances.Name = "Dances"
 Dances.Parent = game.CoreGui
@@ -74,7 +71,10 @@ Stop_Btn.TextColor3 = Color3.fromRGB(0, 0, 0)
 Stop_Btn.TextSize = 20.000
 
 MoonWalkAnim_Btn.MouseButton1Click:Connect(function()
-    local moonwalk = Instance.new("Animation", character)
+    human = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    torso = game.Players.LocalPlayer.Character:WaitForChild("Torso")
+    
+    local moonwalk = Instance.new("Animation", game.Players.LocalPlayer.Character)
     moonwalk.Name = 'mw'
     moonwalk.AnimationId = 'http://www.roblox.com/Asset?ID=30196114'
     
@@ -89,7 +89,7 @@ MoonWalkAnim_Btn.MouseButton1Click:Connect(function()
     local bodyPos = Instance.new("BodyPosition")
 	bodyPos.position = Vector3.new(torso.Position.x + (-unitLook.x * dist), torso.Position.y + 2,torso.Position.z + (-unitLook.y * dist))
 
-	bodyPos.P = GetLift(character) * 6.7
+	bodyPos.P = GetLift(game.Players.LocalPlayer.Character) * 6.7
 	bodyPos.D = bodyPos.P / 2
 	bodyPos.maxForce = Vector3.new(bodyPos.P,bodyPos.P,bodyPos.P)
 
@@ -107,7 +107,11 @@ MoonWalkAnim_Btn.MouseButton1Click:Connect(function()
 end)
 
 MonsterMashAnim_Btn.MouseButton1Click:Connect(function()
-    local theMash = Instance.new("Animation", character)
+    
+    human = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+    torso = game.Players.LocalPlayer.Character:WaitForChild("Torso")
+    
+    local theMash = Instance.new("Animation", game.Players.LocalPlayer.Character)
     theMash.Name = 'mmp'
     theMash.AnimationId = 'http://www.roblox.com/Asset?ID=35654637'
     
@@ -120,6 +124,13 @@ MonsterMashAnim_Btn.MouseButton1Click:Connect(function()
 end)
 
 Stop_Btn.MouseButton1Click:Connect(function()
+    
+    torso = game.Players.LocalPlayer.Character:WaitForChild("Torso")
+    
+    if torso:FindFirstChild("BodyPosition") then
+        torso.BodyPosition:Remove()
+    end
+    
     for _, anim in pairs(human:GetPlayingAnimationTracks()) do
         anim:Stop()
     end
